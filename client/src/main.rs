@@ -1,3 +1,4 @@
+use axum::{routing::get, Router};
 use futures::{FutureExt, SinkExt, StreamExt};
 use serde_json::json;
 use std::collections::HashMap;
@@ -9,8 +10,22 @@ use tokio_tungstenite::{
 
 const SERVER: &str = "ws://127.0.0.1:5001/";
 
+async fn hello() -> &'static str {
+    "TODO: Dashboard"
+}
+
+pub(crate) fn router() -> Router {
+    Router::new().route("/", get(hello))
+}
+
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    tracing_subscriber::fmt().with_max_level(tracing::Level::INFO).with_line_number(true).init();
+
+    let app = router();
+    let listener = TcpListener::bind("127.0.0.1:3002").await.unwrap();
+    let addr = listener.local_addr().unwrap().to_string();
+
     let args: Vec<String> = env::args().skip(1).collect();
     if args.len() != 1 {
         println!("Usage: rgrok [port]");

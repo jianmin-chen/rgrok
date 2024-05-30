@@ -1,7 +1,5 @@
-usage: rgrok 3000 -> go to https://x.braindump.ing
+Usage: `rgrok 3000` -> go to https://x.braindump.ing
 
-how does this work
+Dashboard for viewing requests -> go to localhost:500x
 
-post to /tunnel, open session
-
-whenever someone makes request to generated url
+Will write up how to install and how this works soon!

@@ -4,6 +4,7 @@ use axum::{extract::ConnectInfo, routing::get, routing::post, Router};
 use std::env;
 use std::net::SocketAddr;
 use tokio::net::TcpListener;
+use tower::ServiceExt;
 
 mod errors;
 mod tunnel;
@@ -20,6 +21,7 @@ pub(crate) fn router() -> Router {
         let is_subdomain: Vec<_> = hostname.match_indices(".").map(|(i, _)| i).collect();
         if is_subdomain.len() == 1 {
             // Open tunnel
+            tunnel_router.oneshot(request).await;
         } else {
             // Ping to tunnel
             dbg!("ping to tunnel");
